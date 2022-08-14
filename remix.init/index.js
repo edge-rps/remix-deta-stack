@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const fs = require("fs-extra");
 const path = require("path");
+const YAML = require("YAML");
 
 const sort = require("sort-package-json");
 
@@ -13,6 +14,12 @@ async function main({ rootDirectory }) {
   const ENV_PATH = path.join(rootDirectory, ".env");
   const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
   const README_PATH = path.join(rootDirectory, "README.md");
+  const GITHUB_CONFIG_PATH = path.join(
+    rootDirectory,
+    ".github",
+    "workflows",
+    "main.yml"
+  );
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
@@ -25,6 +32,8 @@ async function main({ rootDirectory }) {
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(PACKAGE_JSON_PATH, "utf-8").then((s) => JSON.parse(s)),
     fs.readFile(README_PATH, "utf-8"),
+    fs.readFile(GITHUB_CONFIG_PATH, "utf-8").then((s) => YAML.parse(s)),
+    ,
   ]);
 
   const newEnv = env.replace(
@@ -35,6 +44,8 @@ async function main({ rootDirectory }) {
   const newPackageJson =
     JSON.stringify(sort({ ...packageJson, name: APP_NAME }), null, 2) + "\n";
 
+  githubConfig.jobs.Deploy.env["deploy-name"] = APP_NAME;
+
   await Promise.all([
     fs.writeFile(ENV_PATH, newEnv),
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
@@ -42,6 +53,7 @@ async function main({ rootDirectory }) {
       README_PATH,
       readme.replace(new RegExp("RemixDetaStack", "g"), APP_NAME)
     ),
+    fs.writeFile(GITHUB_CONFIG_PATH, YAML.stringify(githubConfig)),
   ]);
 }
 
