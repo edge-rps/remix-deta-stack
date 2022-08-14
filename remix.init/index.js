@@ -43,7 +43,7 @@ async function main({ rootDirectory }) {
   const newPackageJson =
     JSON.stringify(sort({ ...packageJson, name: APP_NAME }), null, 2) + "\n";
 
-  githubConfig.jobs.Deploy.env["deploy-name"] = APP_NAME;
+  githubConfig.jobs.Deploy.env["deta-name"] = APP_NAME;
 
   await Promise.all([
     fs.writeFile(ENV_PATH, newEnv),
