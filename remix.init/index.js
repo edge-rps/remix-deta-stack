@@ -22,11 +22,8 @@ async function main({ rootDirectory }) {
   );
 
   const DIR_NAME = path.basename(rootDirectory);
-  const SUFFIX = getRandomString(2);
 
-  const APP_NAME = (DIR_NAME + "-" + SUFFIX)
-    // get rid of anything that's not allowed in an app name
-    .replace(/[^a-zA-Z0-9-_]/g, "-");
+  const APP_NAME = DIR_NAME.replace(/[^a-zA-Z0-9-_]/g, "-");
 
   const [env, packageJson, readme, githubConfig] = await Promise.all([
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
