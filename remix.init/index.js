@@ -15,6 +15,10 @@ async function main({ rootDirectory }) {
   const ENV_PATH = path.join(rootDirectory, ".env");
   const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
   const README_PATH = path.join(rootDirectory, "README.md");
+  const GH_CONFIG_PATH = path.join(
+    rootDirectory,
+    "remix.init/.github/main.yml"
+  );
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
@@ -23,10 +27,11 @@ async function main({ rootDirectory }) {
     // get rid of anything that's not allowed in an app name
     .replace(/[^a-zA-Z0-9-_]/g, "-");
 
-  const [env, packageJson, readme] = await Promise.all([
+  const [env, packageJson, readme, githubConfig] = await Promise.all([
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(PACKAGE_JSON_PATH, "utf-8").then((s) => JSON.parse(s)),
     fs.readFile(README_PATH, "utf-8"),
+    fs.readFile(GH_CONFIG_PATH, "utf-8"),
   ]);
 
   const newEnv = env.replace(
@@ -43,6 +48,14 @@ async function main({ rootDirectory }) {
     fs.writeFile(
       README_PATH,
       readme.replace(new RegExp("RemixDetaStack", "g"), APP_NAME)
+    ),
+    fs.writeFile(
+      README_PATH,
+      readme.replace(new RegExp("RemixDetaStack", "g"), APP_NAME)
+    ),
+    fs.writeFile(
+      path.join(rootDirectory, ".github", "workflows"),
+      githubConfig
     ),
   ]);
 
