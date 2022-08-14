@@ -58,7 +58,7 @@ async function main({ rootDirectory }) {
 async function askSetupQuestions({ rootDirectory, appName }) {
   const answers = await inquirer.prompt([
     {
-      name: "validate",
+      name: "useGithubActions",
       type: "confirm",
       default: true,
       message:
