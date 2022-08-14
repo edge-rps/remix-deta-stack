@@ -1,6 +1,6 @@
 require("dotenv").config();
 const crypto = require("crypto");
-const fs = require("fs/promises");
+const fs = require("fs-extra");
 const path = require("path");
 const inquirer = require("inquirer");
 
