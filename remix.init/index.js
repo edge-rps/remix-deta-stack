@@ -71,6 +71,11 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
     );
 
+    await fs.copy(
+      path.join(rootDirectory, "remix.init", ".github"),
+      path.join(rootDirectory, ".github")
+    );
+
     try {
       const DEPLOY_YAML_PATH = path.join(
         rootDirectory,
@@ -87,11 +92,6 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       );
 
       await fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig);
-
-      await fs.copySync(
-        path.join(rootDirectory, "remix.init", ".github"),
-        path.join(rootDirectory, ".github")
-      );
     } catch (error) {
       console.error(error);
     }
