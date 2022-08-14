@@ -83,7 +83,7 @@ async function askSetupQuestions({ rootDirectory, appName }) {
         .then((s) => YAML.parse(s));
 
       const newDeployConfig = await YAML.stringify(
-        (deployConfig.jobs.Deploy.Env["deta-name"] = appName)
+        (deployConfig.jobs.Deploy.env["deta-name"] = appName)
       );
 
       await fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig);
