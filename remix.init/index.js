@@ -56,21 +56,24 @@ async function main({ rootDirectory }) {
 }
 
 async function askSetupQuestions({ rootDirectory }) {
-  const answers = await inquirer.prompt([
-    {
-      name: "validate",
-      type: "confirm",
-      default: false,
-      message:
-        "(recommended) use Github Actions to deploy instead of Deta CLI?",
-    },
-  ]);
+const answers = await inquirer.prompt([
+  {
+    name: "validate",
+    type: "confirm",
+    default: false,
+    message: "(recommended) use Github Actions to deploy instead of Deta CLI?",
+  },
+]);
 
-  if (answers.validate) {
-    console.log(
-      `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
-    );
-  }
+if (answers.validate) {
+  console.log(
+    `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
+  );
+  await fs.copySync(
+    path.join(rootDirectory, "remix.init", ".github"),
+    path.join(rootDirectory, ".github")
+  );
+}
   console.log(
     `✅  Project is ready! Start development with "deta new && npm run deploy"`
   );

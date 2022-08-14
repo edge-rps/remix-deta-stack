@@ -1,0 +1,38 @@
+name: Remix Deta Deploy
+on: [push]
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    env:
+      deta-access-token: ${{secrets.DETA_ACCESS_TOKEN}}
+      deta-name: ''
+      deta-project: 'default'
+      deta-project-dir: '.'
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install                
+      - name: Build Remix App
+        shell: bash
+        run: |
+          npm run build
+          
+      - name: Install Deta CLI
+        shell: bash
+        run: |
+          curl -fsSL https://get.deta.dev/cli.sh | sh
+          
+      - name: Clone Deta Metadata
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ env.deta-access-token }}
+          cd ${{ env.deta-project-dir }}
+      - name: Deploy to Deta
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ env.deta-access-token }}
+          cd ${{ env.deta-project-dir }}
+          ~/.deta/bin/deta deploy

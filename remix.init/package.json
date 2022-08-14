@@ -4,6 +4,8 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
-        "inquirer": "^8.2.4"
+        "inquirer": "^8.2.4",
+        "sort-package-json": "^1.57.0",
+        "yaml": "^2.1.1"
     }
 }
