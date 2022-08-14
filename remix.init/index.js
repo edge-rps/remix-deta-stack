@@ -1,4 +1,3 @@
-require("dotenv").config();
 const crypto = require("crypto");
 const fs = require("fs-extra");
 const path = require("path");
@@ -72,7 +71,6 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
     );
 
-    
     try {
       const DEPLOY_YAML_PATH = path.join(
         rootDirectory,
@@ -97,7 +95,6 @@ async function askSetupQuestions({ rootDirectory, appName }) {
     } catch (error) {
       console.error(error);
     }
-    
   }
   console.log(
     `✅  Project is ready! Start development with "deta new && npm run deploy"`
