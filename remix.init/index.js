@@ -77,20 +77,25 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       ".github/workflows/main.yml"
     );
 
-    const deployConfig = fs
+    const deployConfig = await fs
       .readFile(DEPLOY_YAML_PATH, "utf-8")
       .then((s) => YAML.parse(s));
 
-    const newDeployConfig = YAML.stringify(
+    const newDeployConfig = await YAML.stringify(
       (deployConfig.jobs.Deploy.Env["deta-name"] = appName)
     );
 
-    fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig);
+    try {
+      await fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig);
 
-    fs.copySync(
-      path.join(rootDirectory, "remix.init", ".github"),
-      path.join(rootDirectory, ".github")
-    );
+      await fs.copySync(
+        path.join(rootDirectory, "remix.init", ".github"),
+        path.join(rootDirectory, ".github")
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
   console.log(
     `✅  Project is ready! Start development with "deta new && npm run deploy"`
