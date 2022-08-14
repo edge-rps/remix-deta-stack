@@ -1,7 +1,9 @@
+const { execSync } = require("child_process");
 const crypto = require("crypto");
 const fs = require("fs-extra");
 const path = require("path");
 const YAML = require("YAML");
+const inquirer = require("inquirer");
 
 const sort = require("sort-package-json");
 
@@ -51,6 +53,36 @@ async function main({ rootDirectory }) {
     ),
     fs.writeFile(GITHUB_CONFIG_PATH, YAML.stringify(githubConfig)),
   ]);
+
+  await askSetupQuestions({ rootDirectory, APP_NAME }).catch((error) => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      throw error;
+    }
+  });
+}
+
+async function askSetupQuestions({ rootDirectory, appName }) {
+  const answers = await inquirer.prompt([
+    {
+      name: "runDetaNew",
+      type: "confirm",
+      default: false,
+      message: 'Do you want to make a new deta project by running "deta new"?',
+    },
+  ]);
+
+  if (answers.validate) {
+    console.log(`I'm creating a new project for you`);
+    execSync(`deta new --name ${appName}`, {
+      stdio: "inherit",
+      cwd: rootDirectory,
+    });
+  }
+  console.log(
+    `✅  Project is ready! Start development with "npm run dev" or deploy with "npm run deploy"`
+  );
 }
 
 module.exports = main;

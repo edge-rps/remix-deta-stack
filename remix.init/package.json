@@ -6,6 +6,7 @@
     "dependencies": {
         "fs-extra": "^10.1.0",
         "sort-package-json": "^1.57.0",
-        "yaml": "^2.1.1"
+        "yaml": "^2.1.1",
+        "inquirer": "^8.2.4"
     }
 }
