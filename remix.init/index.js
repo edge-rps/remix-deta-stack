@@ -33,7 +33,6 @@ async function main({ rootDirectory }) {
     fs.readFile(PACKAGE_JSON_PATH, "utf-8").then((s) => JSON.parse(s)),
     fs.readFile(README_PATH, "utf-8"),
     fs.readFile(GITHUB_CONFIG_PATH, "utf-8").then((s) => YAML.parse(s)),
-    ,
   ]);
 
   const newEnv = env.replace(
