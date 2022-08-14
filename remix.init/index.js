@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const fs = require("fs-extra");
 const path = require("path");
 const inquirer = require("inquirer");
+const YAML = require("yaml");
 
 const sort = require("sort-package-json");
 
@@ -15,6 +16,10 @@ async function main({ rootDirectory }) {
   const ENV_PATH = path.join(rootDirectory, ".env");
   const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
   const README_PATH = path.join(rootDirectory, "README.md");
+  const DEPLOY_YAML_PATH = path.join(
+    rootDirectory,
+    ".github/workflows/main.yml"
+  );
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
@@ -23,10 +28,11 @@ async function main({ rootDirectory }) {
     // get rid of anything that's not allowed in an app name
     .replace(/[^a-zA-Z0-9-_]/g, "-");
 
-  const [env, packageJson, readme] = await Promise.all([
+  const [env, packageJson, readme, deployConfig] = await Promise.all([
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(PACKAGE_JSON_PATH, "utf-8").then((s) => JSON.parse(s)),
     fs.readFile(README_PATH, "utf-8"),
+    fs.readFile(DEPLOY_YAML_PATH, "utf-8").then((s) => YAML.parse(s)),
   ]);
 
   const newEnv = env.replace(
@@ -37,6 +43,10 @@ async function main({ rootDirectory }) {
   const newPackageJson =
     JSON.stringify(sort({ ...packageJson, name: APP_NAME }), null, 2) + "\n";
 
+  const newDeployConfig = YAML.stringify(
+    (deployConfig.jobs.Deploy.Env["deta-name"] = APP_NAME)
+  );
+
   await Promise.all([
     fs.writeFile(ENV_PATH, newEnv),
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
@@ -44,6 +54,7 @@ async function main({ rootDirectory }) {
       README_PATH,
       readme.replace(new RegExp("RemixDetaStack", "g"), APP_NAME)
     ),
+    fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig),
   ]);
 
   await askSetupQuestions({ rootDirectory }).catch((error) => {
