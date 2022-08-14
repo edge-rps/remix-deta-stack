@@ -72,9 +72,11 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
     );
 
+    
     try {
       const DEPLOY_YAML_PATH = path.join(
         rootDirectory,
+        "remix.init",
         ".github/workflows/main.yml"
       );
 
