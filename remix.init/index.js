@@ -72,20 +72,20 @@ async function askSetupQuestions({ rootDirectory, appName }) {
       `Added Github Actions, be sure to set the "DETA_ACCESS_TOKEN" secret on Github`
     );
 
-    const DEPLOY_YAML_PATH = path.join(
-      rootDirectory,
-      ".github/workflows/main.yml"
-    );
-
-    const deployConfig = await fs
-      .readFile(DEPLOY_YAML_PATH, "utf-8")
-      .then((s) => YAML.parse(s));
-
-    const newDeployConfig = await YAML.stringify(
-      (deployConfig.jobs.Deploy.Env["deta-name"] = appName)
-    );
-
     try {
+      const DEPLOY_YAML_PATH = path.join(
+        rootDirectory,
+        ".github/workflows/main.yml"
+      );
+
+      const deployConfig = await fs
+        .readFile(DEPLOY_YAML_PATH, "utf-8")
+        .then((s) => YAML.parse(s));
+
+      const newDeployConfig = await YAML.stringify(
+        (deployConfig.jobs.Deploy.Env["deta-name"] = appName)
+      );
+
       await fs.writeFile(DEPLOY_YAML_PATH, newDeployConfig);
 
       await fs.copySync(
