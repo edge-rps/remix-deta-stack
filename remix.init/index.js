@@ -95,6 +95,10 @@ async function askSetupQuestions({ rootDirectory, appName }) {
     } catch (error) {
       console.error(error);
     }
+  } else {
+    fs.rm(path.join(rootDirectory, ".github"), {
+      recursive: true,
+    })
   }
   console.log(
     `✅  Project is ready! Start development with "deta new && npm run deploy"`
