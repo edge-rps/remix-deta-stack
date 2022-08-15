@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-
+---
 
 
 ALL ASSETS CREATED BY "Remix Software Inc" are under the following license:
