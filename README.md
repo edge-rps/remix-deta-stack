@@ -21,7 +21,7 @@ npm run deploy # ⚠ NOT RECOMMENDED!!! ⚠ consider setting up github as a bett
 
 To setup Github Actions:
 ```bash
-goto your github repo settings > secrets > actions > set new secret DETA_ACCESS_TOKEN to equal your deta project id
+goto your github repo settings > secrets > actions > set new secret DETA_ACCESS_TOKEN to equal your deta project key
 check .github/workflows/main.yml file to make sure that the "deta-name" and "deta-project" property match the one on Deta.sh
  ```
 
