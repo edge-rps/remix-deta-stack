@@ -1,51 +1,29 @@
 # Remix Deta Stack
 
-- [Remix Docs](https://remix.run/docs)
+What you will need
+- [Remix](https://remix.run)
+- [Deta CLI](https://docs.deta.sh/docs/cli/install)
 
-## Development
-
-Start the Remix development asset server and the Express server by running:
-
+How to install:
 ```sh
-npm run dev
+npx create-remix --template ryker2000/remix-deta-stack # create a new app
+deta new --project my-remix-app # make sure that this name matches what you want for your remix app
+npm run deploy # ⚠ NOT RECOMMENDED!!! ⚠ consider setting up github as a better alternative.
 ```
 
-This starts your app in development mode, which will purge the server require cache when Remix rebuilds assets so you don't need a process manager restarting the express server.
+---
 
-## Deployment
+# Github Actions
 
-First, build your app for production:
+>I don't recommend  using "npm run deploy" to deploy your app but rather using [Github Actions](https://github.com/features/actions). The reason for this is that Deta deploys your local files when using the npm command this may cause conflicting file issues. 
 
-```sh
-npm run build
-```
+> Github Actions allows you to use their servers to build the files > upload to Deta. The bonus is that it auto deploys to Deta on Git Push!
 
-Then run the app in production mode:
+To setup Github Actions:
+```bash
+goto your github repo settings > secrets > actions > set new secret DETA_ACCESS_TOKEN to equal your deta project id
+check .github/workflows/main.yml file to make sure that the "deta-name" and "deta-project" property match the one on Deta.sh
+ ```
 
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying express applications you should be right at home just make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
-```
+---
+[MIT Open Source](LICENSE.md)
