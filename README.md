@@ -26,4 +26,4 @@ check .github/workflows/main.yml file to make sure that the "deta-name" and "det
  ```
 
 ---
-[MIT Open Source](LICENSE.md)
+[MIT Open Source](LICENSE)
