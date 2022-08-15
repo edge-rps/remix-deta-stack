@@ -7,7 +7,7 @@ What you will need
 How to install:
 ```sh
 npx create-remix --template ryker2000/remix-deta-stack # create a new app
-deta new --project my-remix-app # make sure that this name matches what you want for your remix app
+deta new --name my-remix-app # make sure that this name matches what you want for your remix app
 npm run deploy # ⚠ NOT RECOMMENDED!!! ⚠ consider setting up github as a better alternative.
 ```
 
